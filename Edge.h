@@ -5,9 +5,9 @@
 
 struct Edge {
 	unsigned int* ports;
-	struct Vertex* toVertex;
+	unsigned int toVertexNumber;
 };
 
-struct Edge createEdge(unsigned int* ports, struct Vertex* toVertex);
+struct Edge createEdge(unsigned int* ports, unsigned int toVertexNumber);
 
 #endif
