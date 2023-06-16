@@ -9,4 +9,6 @@ struct AdjacencyList {
     struct Edge** edges;
 };
 
+void deleteAdjacencyList(struct AdjacencyList* list);
+
 #endif

@@ -4,11 +4,12 @@
 #include <stdbool.h>
 #include "Vertex.h"
 #include "Edge.h"
+#include "AdjacencyList.h"
 
 struct Graph {
 	unsigned int vertexCount;
 	struct Vertex** vertices;
-	struct Edge*** adjacencyList;
+    struct AdjacencyList** adjacencyLists;
 };
 
 struct Graph* createEmptyGraph();
