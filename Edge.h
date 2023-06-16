@@ -6,6 +6,6 @@ struct Edge {
 	unsigned int toVertexNumber;
 };
 
-struct Edge createEdge(unsigned int* ports, unsigned int toVertexNumber);
+struct Edge* createEdge(unsigned int* ports, unsigned int toVertexNumber);
 
 #endif
