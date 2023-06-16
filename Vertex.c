@@ -5,5 +5,5 @@ struct Vertex* createVertex(char* computerName, unsigned int port) {
 	v->computerName = computerName;
 	v->port = port;
 
-	return v;
+	return;
 }
