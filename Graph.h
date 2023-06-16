@@ -13,12 +13,12 @@ struct Graph {
 struct Graph* createEmptyGraph();
 struct Graph* createRandomGraph();
 unsigned int* findShortestPath(unsigned int fromVertexNumber, unsigned int toVertexNumber);
-void clearGraph(Graph* graph);
-bool addVertex(Graph* graph, Vertex* vertex);
-bool removeVertex(Graph* graph, unsigned int vertexNumber);
-void printGraphAsMatrix(Graph* graph);
-void printGraphAsAdjacencyList(Graph* graph);
-bool addEdge(Graph* graph, unsigned int fromVertexNumber, unsigned int toVertexNumber);
-bool removeEdge(Graph* graph, unsigned int edgeNumber);
+void clearGraph(struct Graph* graph);
+bool addVertex(struct Graph* graph, struct Vertex* vertex);
+bool removeVertex(struct Graph* graph, unsigned int vertexNumber);
+void printGraphAsMatrix(struct Graph* graph);
+void printGraphAsAdjacencyList(struct Graph* graph);
+bool addEdge(struct Graph* graph, unsigned int fromVertexNumber, unsigned int toVertexNumber);
+bool removeEdge(struct Graph* graph, unsigned int edgeNumber);
 
 #endif

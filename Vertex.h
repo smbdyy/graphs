@@ -7,6 +7,6 @@ struct Vertex {
 };
 
 struct Vertex* createVertex(char* computerName, unsigned int port);
-void deleteVertex(Vertex* vertex);
+void deleteVertex(struct Vertex* vertex);
 
 #endif
