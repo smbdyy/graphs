@@ -1,5 +1,5 @@
 #include "Edge.h"
-#include <stdlib.h>
+#include <malloc.h>
 
 struct Edge* createEdge(unsigned int* ports, unsigned int toVertexNumber) {
 	struct Edge* e = (struct Edge* )malloc(sizeof(struct Edge));

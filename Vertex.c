@@ -1,5 +1,5 @@
 #include "Vertex.h"
-#include <stdlib.h>
+#include <malloc.h>
 
 struct Vertex* createVertex(char* computerName, unsigned int port) {
 	struct Vertex* v = (struct Vertex* )malloc(sizeof(struct Vertex));
