@@ -6,7 +6,7 @@
 
 struct Graph {
 	unsigned int vertexCount;
-	struct Vertex** vertexes;
+	struct Vertex** vertices;
 	struct Edge*** adjacencyList;
 };
 
