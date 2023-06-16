@@ -7,6 +7,6 @@ struct Edge {
 };
 
 struct Edge* createEdge(unsigned int* ports, unsigned int toVertexNumber);
-void deleteEdge(Edge* edge);
+void deleteEdge(struct Edge* edge);
 
 #endif

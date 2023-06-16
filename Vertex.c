@@ -7,3 +7,8 @@ struct Vertex* createVertex(char* computerName, unsigned int port) {
 
 	return;
 }
+
+void deleteVertex(struct Vertex* vertex) {
+	free(vertex->computerName);
+	free(vertex);
+}
