@@ -1,7 +1,7 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
-#include "Vretex.h"
+#include "Vertex.h"
 #include "Edge.h"
 
 struct Graph {
