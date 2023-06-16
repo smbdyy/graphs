@@ -15,7 +15,7 @@ struct Graph {
 struct Graph* createEmptyGraph();
 struct Graph* createRandomGraph();
 unsigned int* findShortestPath(unsigned int fromVertexNumber, unsigned int toVertexNumber);
-void clearGraph(struct Graph* graph);
+void deleteGraph(struct Graph* graph);
 bool addVertex(struct Graph* graph, struct Vertex* vertex);
 bool removeVertex(struct Graph* graph, unsigned int vertexNumber);
 void printGraphAsMatrix(struct Graph* graph);
