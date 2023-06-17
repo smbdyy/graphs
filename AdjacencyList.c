@@ -13,7 +13,7 @@ bool deleteEdgeFromList(struct AdjacencyList* list, unsigned int edgeNumber) {
     if (edgeNumber >= list->size) return false;
 
     struct Edge** newList = (struct Edge** )malloc(sizeof(struct Edge*) * (list->size - 1));
-    if (newList == NULL) return NULL;
+    if (newList == NULL) return false;
 
     deleteEdge(list->edges[edgeNumber]);
     for (int i = 0; i < edgeNumber; i++) {
@@ -26,11 +26,13 @@ bool deleteEdgeFromList(struct AdjacencyList* list, unsigned int edgeNumber) {
     free(list->edges);
     list->edges = newList;
     list->size--;
+
+    return true;
 }
 
 bool addEdgeToList(struct AdjacencyList* list, struct Edge* edge) {
     struct Edge** newList = (struct Edge** )malloc(sizeof(struct Edge*) * (list->size + 1));
-    if (newList == NULL) return NULL;
+    if (newList == NULL) return false;
 
     for (unsigned int i = 0; i < list->size; i++) {
         newList[i] = list->edges[i];
@@ -40,4 +42,6 @@ bool addEdgeToList(struct AdjacencyList* list, struct Edge* edge) {
     free(list->edges);
     list->edges = newList;
     list->size++;
+
+    return true;
 }
