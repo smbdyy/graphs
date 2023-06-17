@@ -133,3 +133,9 @@ bool addEdge(struct Graph* graph, unsigned int fromVertexNumber, struct Edge* ed
 
     return addEdgeToList(list, edge);
 }
+
+bool deleteEdgeFromGraph(struct Graph* graph, unsigned int fromVertexNumber, unsigned int edgeNumber) {
+    if (fromVertexNumber >= graph->vertexCount) return false;
+
+    return deleteEdgeFromList(graph->adjacencyLists[fromVertexNumber], edgeNumber);
+}

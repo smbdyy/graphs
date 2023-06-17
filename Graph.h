@@ -21,6 +21,6 @@ bool removeVertex(struct Graph* graph, unsigned int vertexNumber);
 void printGraphAsMatrix(struct Graph* graph);
 void printGraphAsAdjacencyList(struct Graph* graph);
 bool addEdge(struct Graph* graph, unsigned int fromVertexNumber, struct Edge* edge);
-bool removeEdge(struct Graph* graph, unsigned int edgeNumber);
+bool deleteEdgeFromGraph(struct Graph* graph, unsigned int fromVertexNumber, unsigned int edgeNumber);
 
 #endif
