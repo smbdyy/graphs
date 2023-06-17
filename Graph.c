@@ -84,14 +84,6 @@ bool addVertex(struct Graph* graph, struct Vertex* vertex) {
 bool removeVertex(struct Graph* graph, unsigned int vertexNumber) {
     if (vertexNumber >= graph->vertexCount) return false;
 
-    deleteVertex(graph->vertices[vertexNumber]);
-    deleteAdjacencyList(graph->adjacencyLists[vertexNumber]);
-
-    for (unsigned int i = vertexNumber; i < graph->vertexCount - 1; i++) {
-        graph->vertices[i] = graph->vertices[i + 1];
-        graph->adjacencyLists[i] = graph->adjacencyLists[i + 1];
-    }
-
     struct Vertex** newVertices = (struct Vertex** )malloc(sizeof(struct Vertex*) * (graph->vertexCount - 1));
     struct AdjacencyList** newLists = (struct AdjacencyList** )
             malloc(sizeof(struct AdjacencyList*) * (graph->vertexCount - 1));
@@ -100,15 +92,33 @@ bool removeVertex(struct Graph* graph, unsigned int vertexNumber) {
         return false;
     }
 
+    deleteVertex(graph->vertices[vertexNumber]);
+    deleteAdjacencyList(graph->adjacencyLists[vertexNumber]);
+
+    for (unsigned int i = vertexNumber; i < graph->vertexCount - 1; i++) {
+        graph->vertices[i] = graph->vertices[i + 1];
+        graph->adjacencyLists[i] = graph->adjacencyLists[i + 1];
+    }
+
     graph->vertexCount--;
     for (unsigned int i = 0; i < graph->vertexCount; i++) {
         newVertices[i] = graph->vertices[i];
         newLists[i] = graph->adjacencyLists[i];
 
         for (int j = 0; j < newLists[i]->size; j++) {
-            newLists[i]->edges[j]->toVertexNumber == vertexNumber
+            if (newLists[i]->edges[j]->toVertexNumber == vertexNumber) {
+                deleteEdgeFromList(newLists[i], j);
+            }
         }
     }
 
+    for (unsigned int i = 0; i < graph->vertexCount; i++) {
+        for (int j = 0; j < newLists[i]->size; j++) {
+            if (newLists[i]->edges[j]->toVertexNumber > vertexNumber) {
+                newLists[i]->edges[j]->toVertexNumber--;
+            }
+        }
+    }
 
+    return true;
 }
