@@ -107,7 +107,7 @@ bool removeVertex(struct Graph* graph, unsigned int vertexNumber) {
 
         for (int j = 0; j < newLists[i]->size; j++) {
             if (newLists[i]->edges[j]->toVertexNumber == vertexNumber) {
-                deleteEdgeFromList(newLists[i], j);
+                if (!deleteEdgeFromList(newLists[i], j)) return false;
             }
         }
     }
@@ -121,4 +121,15 @@ bool removeVertex(struct Graph* graph, unsigned int vertexNumber) {
     }
 
     return true;
+}
+
+bool addEdge(struct Graph* graph, unsigned int fromVertexNumber, struct Edge* edge) {
+    if (fromVertexNumber >= graph->vertexCount) return false;
+
+    struct AdjacencyList* list = graph->adjacencyLists[fromVertexNumber];
+    for (int i = 0; i < list->size; i++) {
+        if (list->edges[i] == edge) return false;
+    }
+
+    return addEdgeToList(list, edge);
 }
