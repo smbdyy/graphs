@@ -3,6 +3,8 @@
 
 struct Vertex* createVertex(char* computerName, unsigned int port) {
 	struct Vertex* v = (struct Vertex* )malloc(sizeof(struct Vertex));
+    if (v == NULL) return NULL;
+
 	v->computerName = computerName;
 	v->port = port;
 
