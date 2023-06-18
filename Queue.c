@@ -10,6 +10,12 @@ struct Node* createNode(unsigned int value) {
     return node;
 }
 
+void deleteNode(struct Node* node) {
+    if (node->next != NULL) deleteNode(node->next);
+
+    free(node);
+}
+
 struct Queue* createQueue() {
     struct Queue* q = (struct Queue* )malloc(sizeof(struct Queue));
     if (q == NULL) return q;
@@ -18,6 +24,11 @@ struct Queue* createQueue() {
     q->back = NULL;
 
     return q;
+}
+
+void deleteQueue(struct Queue* queue) {
+    deleteNode(queue->front);
+    free(queue);
 }
 
 bool enqueue(struct Queue* queue, unsigned int value) {

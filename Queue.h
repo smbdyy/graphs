@@ -10,6 +10,7 @@ struct Node {
 };
 
 struct Node* createNode(unsigned int value);
+void deleteNode(struct Node* node);
 
 struct Queue {
     struct Node* front;
@@ -17,6 +18,7 @@ struct Queue {
 };
 
 struct Queue* createQueue();
+void deleteQueue(struct Queue* queue);
 bool enqueue(struct Queue* queue, unsigned int value);
 unsigned int dequeue(struct Queue* queue);
 
