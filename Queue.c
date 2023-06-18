@@ -1,16 +1,40 @@
 #include "Queue.h"
 
+struct Node* createNode(unsigned int value) {
+    struct Node* node = (struct Node* )malloc(sizeof(struct Node));
+    if (node == NULL) return node;
+
+    node->value = value;
+    node->next = NULL;
+
+    return node;
+}
+
 struct Queue* createQueue() {
     struct Queue* q = (struct Queue* )malloc(sizeof(struct Queue));
+    if (q == NULL) return q;
+
+    q->front = NULL;
+    q->back = NULL;
+
     return q;
 }
 
-void enqueue(struct Queue* queue, unsigned int value) {
-    struct Node* node = (struct Node* )malloc(sizeof(struct Node));
-    node->value = value;
+bool enqueue(struct Queue* queue, unsigned int value) {
+    struct Node* node = createNode(value);
+    if (node == NULL) return false;
 
-    node->next = queue->front;
-    queue->front = node;
+    if (queue->front == NULL) {
+        queue->front = node;
+    }
+    else if (queue->back == NULL) {
+        queue->back = node;
+        queue->front->next = node;
+    }
+    else {
+        queue->back->next = node;
+        queue->back = node;
+    }
 }
 
 unsigned int dequeue(struct Queue* queue) {

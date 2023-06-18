@@ -9,12 +9,15 @@ struct Node {
     struct Node* next;
 };
 
+struct Node* createNode(unsigned int value);
+
 struct Queue {
     struct Node* front;
+    struct Node* back;
 };
 
 struct Queue* createQueue();
-void enqueue(struct Queue* queue, unsigned int value);
+bool enqueue(struct Queue* queue, unsigned int value);
 unsigned int dequeue(struct Queue* queue);
 
 #endif
