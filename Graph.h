@@ -18,8 +18,6 @@ unsigned int* findShortestPath(unsigned int fromVertexNumber, unsigned int toVer
 void deleteGraph(struct Graph* graph);
 bool addVertex(struct Graph* graph, struct Vertex* vertex);
 bool removeVertex(struct Graph* graph, unsigned int vertexNumber);
-void printGraphAsMatrix(struct Graph* graph);
-void printGraphAsAdjacencyList(struct Graph* graph);
 bool addEdge(struct Graph* graph, unsigned int fromVertexNumber, struct Edge* edge);
 bool deleteEdgeFromGraph(struct Graph* graph, unsigned int fromVertexNumber, unsigned int edgeNumber);
 
