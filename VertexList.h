@@ -6,7 +6,7 @@ struct VertexList {
     struct Vertex** vertices;
 };
 
-struct VertexList* createVertexList();
+struct VertexList* createVertexList(unsigned int size, struct Vertex** vertices);
 void deleteVertexList(struct VertexList* list);
 
 #endif

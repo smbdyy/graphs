@@ -23,7 +23,6 @@ struct Graph* createRandomGraph() {
     srand(time(NULL));
 
     unsigned int vertexAmount = rand() % MAX_RANDOM_VERTICES + 1;
-    graph->vertexCount = vertexAmount;
     unsigned int portsAmount = rand() % vertexAmount + 1;
 
     unsigned int* ports = (unsigned int* )malloc(sizeof(unsigned int) * portsAmount);
@@ -95,12 +94,10 @@ bool addVertex(struct Graph* graph, struct Vertex* vertex) {
     }
 
     struct Vertex** newVertices = (struct Vertex** )malloc(sizeof(struct Vertex*) * (graph->vertexCount + 1));
+    if (newVertices == NULL) return false;
     struct AdjacencyList** newLists = (struct AdjacencyList** )
             malloc(sizeof(struct AdjacencyList*) * (graph->vertexCount + 1));
-
-    if (newVertices == NULL || newLists == NULL) {
-        return false;
-    }
+    if (newLists == NULL) return false;
 
     for (int i = 0; i < graph->vertexCount; i++) {
         newVertices[i] = graph->vertices[i];
@@ -122,12 +119,10 @@ bool removeVertex(struct Graph* graph, unsigned int vertexNumber) {
     if (vertexNumber >= graph->vertexCount) return false;
 
     struct Vertex** newVertices = (struct Vertex** )malloc(sizeof(struct Vertex*) * (graph->vertexCount - 1));
+    if (newVertices == NULL) return false;
     struct AdjacencyList** newLists = (struct AdjacencyList** )
             malloc(sizeof(struct AdjacencyList*) * (graph->vertexCount - 1));
-
-    if (newVertices == NULL || newLists == NULL) {
-        return false;
-    }
+    if (newLists == NULL) return false;
 
     deleteVertex(graph->vertices[vertexNumber]);
     deleteAdjacencyList(graph->adjacencyLists[vertexNumber]);
@@ -182,10 +177,11 @@ int findDistance(struct Graph* graph, unsigned int fromVertexNumber, unsigned in
     if (fromVertexNumber >= n || toVertexNumber >= n) return -1;
 
     int* distances = (int* )malloc(sizeof(int) * n);
+    if (distances == NULL) return -1;
     bool* visited = (bool* )malloc(sizeof(bool) * n);
+    if (visited == NULL) return -1;
     struct Queue* queue = createQueue();
-
-    if (distances == NULL || visited == NULL || queue == NULL) return -1;
+    if (queue == NULL) return -1;
 
     for (int i = 0; i < n; i++) {
         distances[i] = -1;
@@ -194,7 +190,12 @@ int findDistance(struct Graph* graph, unsigned int fromVertexNumber, unsigned in
 
     distances[fromVertexNumber] = 0;
     visited[fromVertexNumber] = true;
-    enqueue(queue, fromVertexNumber);
+    if (!enqueue(queue, fromVertexNumber)) {
+        free(distances);
+        free(visited);
+        deleteQueue(queue);
+        return -1;
+    }
 
     while (queue->front != NULL) {
         unsigned int vertexNumber = dequeue(queue);
@@ -211,10 +212,89 @@ int findDistance(struct Graph* graph, unsigned int fromVertexNumber, unsigned in
 
             distances[to] = distances[vertexNumber] + 1;
             visited[to] = true;
-            enqueue(queue, to);
-            if (to == toVertexNumber) return distances[to];
+            if (!enqueue(queue, to))  {
+                free(distances);
+                free(visited);
+                deleteQueue(queue);
+                return -1;
+            }
+            if (to == toVertexNumber) {
+                int answer = distances[to];
+                free(distances);
+                free(visited);
+                deleteQueue(queue);
+                return answer;
+            }
         }
     }
 
-    return distances[toVertexNumber];
+    int answer = distances[toVertexNumber];
+    free(distances);
+    free(visited);
+    deleteQueue(queue);
+    return answer;
+}
+
+struct VertexList* findComputers(struct Graph* graph, unsigned int port) {
+    unsigned int n = graph->vertexCount;
+
+    bool* visited = (bool* )malloc(sizeof(bool) * n);
+    if (visited == NULL) return NULL;
+    struct Queue* queue = createQueue();
+    if (queue == NULL) return NULL;
+
+    for (int i = 0; i < n; i++) {
+        visited[i] = false;
+    }
+
+    for (int i = 0; i < n; i++) {
+        if (visited[i] || graph->vertices[i]->port != port) continue;
+
+        if (!enqueue(queue, i)) {
+            free(visited);
+            deleteQueue(queue);
+            return NULL;
+        }
+        visited[i] = true;
+
+        while (queue->front != NULL) {
+            unsigned int vertexNumber = dequeue(queue);
+            struct AdjacencyList* edges = graph->adjacencyLists[vertexNumber];
+            struct Vertex* vertex = graph->vertices[vertexNumber];
+            for (int j = 0; j < edges->size; j++) {
+                struct Edge* edge = edges->edges[j];
+                unsigned int to = edge->toVertexNumber;
+
+                struct Vertex* toVertex = graph->vertices[to];
+                if (!containsPort(edge, vertex->port) || !containsPort(edge, toVertex->port) || visited[to]) {
+                    continue;
+                }
+
+                if (!enqueue(queue, to)) {
+                    free(visited);
+                    deleteQueue(queue);
+                    return NULL;
+                }
+                visited[to] = true;
+            }
+        }
+    }
+
+    deleteQueue(queue);
+    unsigned int count = 0;
+    for (int i = 0; i < n; i++) {
+        if (visited[i]) count++;
+    }
+
+    struct Vertex** vertices = (struct Vertex** )malloc(sizeof(struct Vertex* ) * count);
+    int index = 0;
+    for (int i = 0; i < n; i++) {
+        if (visited[i]) {
+            vertices[index] = graph->vertices[i];
+            index++;
+        }
+    }
+
+    free(visited);
+    return createVertexList(count, vertices);
 }
