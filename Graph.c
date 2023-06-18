@@ -1,6 +1,7 @@
 #include "Graph.h"
 #include "Vertex.h"
 #include "Edge.h"
+#include "Queue.h"
 #include <stdlib.h>
 #include <time.h>
 
@@ -61,7 +62,7 @@ struct Graph* createRandomGraph() {
                 toVertexNumber = rand() % vertexAmount;
             }
 
-            struct Edge* edge = createEdge(portsInEdge, toVertexNumber);
+            struct Edge* edge = createEdge(portsInEdgeAmount, portsInEdge, toVertexNumber);
             if (edge == NULL) return NULL;
             edges[j] = edge;
         }
@@ -174,4 +175,46 @@ bool deleteEdgeFromGraph(struct Graph* graph, unsigned int fromVertexNumber, uns
     if (fromVertexNumber >= graph->vertexCount) return false;
 
     return deleteEdgeFromList(graph->adjacencyLists[fromVertexNumber], edgeNumber);
+}
+
+int findDistance(struct Graph* graph, unsigned int fromVertexNumber, unsigned int toVertexNumber) {
+    unsigned int n = graph->vertexCount;
+    if (fromVertexNumber >= n || toVertexNumber >= n) return -1;
+
+    int* distances = (int* )malloc(sizeof(int) * n);
+    bool* visited = (bool* )malloc(sizeof(bool) * n);
+    struct Queue* queue = createQueue();
+
+    if (distances == NULL || visited == NULL || queue == NULL) return -1;
+
+    for (int i = 0; i < n; i++) {
+        distances[i] = -1;
+        visited[i] = false;
+    }
+
+    distances[fromVertexNumber] = 0;
+    visited[fromVertexNumber] = true;
+    enqueue(queue, fromVertexNumber);
+
+    while (queue->front != NULL) {
+        unsigned int vertexNumber = dequeue(queue);
+        struct Vertex* vertex = graph->vertices[vertexNumber];
+        struct AdjacencyList* edges = graph->adjacencyLists[vertexNumber];
+        for (int i = 0; i < edges->size; i++) {
+            struct Edge* edge = edges->edges[i];
+
+            unsigned int to = edge->toVertexNumber;
+            struct Vertex* toVertex = graph->vertices[to];
+            if (!containsPort(edge, vertex->port) || !containsPort(edge, toVertex->port) || visited[to]) {
+                continue;
+            }
+
+            distances[to] = distances[vertexNumber] + 1;
+            visited[to] = true;
+            enqueue(queue, to);
+            if (to == toVertexNumber) return distances[to];
+        }
+    }
+
+    return distances[toVertexNumber];
 }

@@ -20,5 +20,6 @@ bool addVertex(struct Graph* graph, struct Vertex* vertex);
 bool removeVertex(struct Graph* graph, unsigned int vertexNumber);
 bool addEdge(struct Graph* graph, unsigned int fromVertexNumber, struct Edge* edge);
 bool deleteEdgeFromGraph(struct Graph* graph, unsigned int fromVertexNumber, unsigned int edgeNumber);
+int findDistance(struct Graph* graph, unsigned int fromVertexNumber, unsigned int toVertexNumber);
 
 #endif
