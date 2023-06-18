@@ -16,3 +16,11 @@ void deleteEdge(struct Edge* edge) {
 	free(edge->ports);
 	free(edge);
 }
+
+bool containsPort(struct Edge* edge, unsigned int port) {
+    for (int i = 0; i < edge->portsAmount; i++) {
+        if (edge->ports[i] == port) return true;
+    }
+
+    return false;
+}
