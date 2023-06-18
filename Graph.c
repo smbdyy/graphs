@@ -17,30 +17,66 @@ struct Graph* createEmptyGraph() {
     return graph;
 }
 
-//struct Graph* createRandomGraph() {
-//    struct Graph* graph = (struct Graph* )malloc(sizeof(struct Graph));
-//    srand(time(NULL));
-//
-//    unsigned int vertexAmount = rand() % MAX_RANDOM_VERTICES + 1;
-//    graph->vertexCount = vertexAmount;
-//    unsigned int portsAmount = rand() % vertexAmount + 1;
-//
-//    unsigned int* ports = (unsigned int* )malloc(sizeof(unsigned int) * portsAmount);
-//    for (int i = 0; i < portsAmount; i++) {
-//        ports[i] = rand();
-//    }
-//
-//    struct Vertex** vertices = (struct Vertex** )malloc(sizeof(struct Vertex*) * vertexAmount);
-//    for (int i = 0; i < vertexAmount; i++) {
-//        unsigned int port = ports[rand() % portsAmount];
-//        vertices[i] = createVertex("random name", port);
-//    }
-//
-//    struct Edge*** adjacencyList = (struct Edge*** )malloc(sizeof(struct Edge**) * vertexAmount);
-//    for (int i = 0; i < vertexAmount; i++) {
-//
-//    }
-//}
+struct Graph* createRandomGraph() {
+    struct Graph* graph = (struct Graph* )malloc(sizeof(struct Graph));
+    srand(time(NULL));
+
+    unsigned int vertexAmount = rand() % MAX_RANDOM_VERTICES + 1;
+    graph->vertexCount = vertexAmount;
+    unsigned int portsAmount = rand() % vertexAmount + 1;
+
+    unsigned int* ports = (unsigned int* )malloc(sizeof(unsigned int) * portsAmount);
+    if (ports == NULL) return NULL;
+    for (int i = 0; i < portsAmount; i++) {
+        ports[i] = rand();
+    }
+
+    struct Vertex** vertices = (struct Vertex** )malloc(sizeof(struct Vertex*) * vertexAmount);
+    if (vertices == NULL) return NULL;
+    for (int i = 0; i < vertexAmount; i++) {
+        unsigned int port = ports[rand() % portsAmount];
+        vertices[i] = createVertex("random name", port);
+    }
+
+    struct AdjacencyList** adjacencyLists = (struct AdjacencyList** )
+            malloc(sizeof(struct AdjacencyList*) * vertexAmount);
+    if (adjacencyLists == NULL) return NULL;
+
+    for (int i = 0; i < vertexAmount; i++) {
+        unsigned int edgesAmount = rand() % vertexAmount;
+        struct Edge** edges = (struct Edge** )malloc(sizeof(struct Edge* ) * edgesAmount);
+        if (edges == NULL) return NULL;
+        for (int j = 0; j < edgesAmount; j++) {
+            unsigned int portsInEdgeAmount = rand() % portsAmount + 1;
+            unsigned int* portsInEdge = (unsigned int* )malloc(sizeof(unsigned int) * portsInEdgeAmount);
+
+            if (portsInEdge == NULL) return NULL;
+
+            for (int k = 0; k < portsInEdgeAmount; k++) {
+                portsInEdge[i] = ports[rand() % portsAmount];
+            }
+
+            unsigned int toVertexNumber = rand() % vertexAmount;
+            while (toVertexNumber == i) {
+                toVertexNumber = rand() % vertexAmount;
+            }
+
+            struct Edge* edge = createEdge(portsInEdge, toVertexNumber);
+            if (edge == NULL) return NULL;
+            edges[j] = edge;
+        }
+
+        adjacencyLists[i]->size = edgesAmount;
+        adjacencyLists[i]->edges = edges;
+    }
+
+    free(ports);
+    graph->vertexCount = vertexAmount;
+    graph->adjacencyLists = adjacencyLists;
+    graph->vertices = vertices;
+
+    return graph;
+}
 
 void deleteGraph(struct Graph* graph) {
     for (int i = 0; i < graph->vertexCount; i++) {
