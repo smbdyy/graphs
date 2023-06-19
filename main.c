@@ -168,6 +168,27 @@ void changeVertexComputerNameDialog(struct Graph* graph) {
     puts("vertex computer renamed successfully");
 }
 
+void changeVertexPortDialog(struct Graph* graph) {
+    if (graph->vertexCount == 0) {
+        puts("graph is empty, returning to main menu");
+        return;
+    }
+
+    unsigned int number;
+    puts("enter vertex number:");
+    scanf("%u", &number);
+    if (number >= graph->vertexCount) {
+        puts("no such vertex, returning to main menu");
+        return;
+    }
+
+    puts("enter new port:");
+    unsigned int newPort;
+    scanf("%u", &newPort);
+    graph->vertices[number]->port = newPort;
+    puts("vertex port changed successfully, , returning to main menu");
+}
+
 void addPortDialog(struct Edge* edge) {
     unsigned int port;
     puts("enter port:");
@@ -315,7 +336,9 @@ int main(int argv, char** args) {
             case 5:
                 changeVertexComputerNameDialog(graph);
                 break;
-
+            case 6:
+                changeVertexPortDialog(graph);
+                break;
             case 7:
                 editEdgePortsDialog(graph);
                 break;
