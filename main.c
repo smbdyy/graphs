@@ -115,6 +115,36 @@ void deleteVertexDialog(struct Graph* graph) {
     }
 }
 
+bool hasEdges(struct Graph* graph) {
+    for (unsigned int i = 0; i < graph->vertexCount; i++) {
+        if (graph->adjacencyLists[i]->size > 0) return true;
+    }
+
+    return false;
+}
+
+void deleteEdgeDialog(struct Graph* graph) {
+    if (!hasEdges(graph)) {
+        puts("no edges in graph, returning to main menu");
+        return;
+    }
+
+    puts("enter 'from' vertex number and edge number:");
+    unsigned int vertex, edge;
+    scanf("%u %u", &vertex, &edge);
+    if (vertex >= graph->vertexCount || graph->adjacencyLists[vertex]->size <= edge) {
+        puts("no such vertex or edge, returning to main menu");
+        return;
+    }
+
+    if (deleteEdgeFromGraph(graph, vertex, edge)) {
+        puts("edge successfully deleted, returning to main menu");
+    }
+    else {
+        puts("error while deleting an edge, returning to main menu");
+    }
+}
+
 int main(int argv, char** args) {
     struct Graph* graph;
     puts("pick an option:\n 0. Create empty graph\n 1. Create random graph\n 2. Exit");
@@ -178,6 +208,9 @@ int main(int argv, char** args) {
                 break;
             case 3:
                 deleteVertexDialog(graph);
+                break;
+            case 4:
+                deleteEdgeDialog(graph);
                 break;
             case 10:
                 done = true;
