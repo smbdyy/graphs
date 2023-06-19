@@ -7,6 +7,9 @@ struct Vertex* createVertex(char* computerName, unsigned int port) {
     if (v == NULL) return NULL;
 
     v->computerName = (char* )malloc(sizeof(char) * 200);
+    if (v->computerName == NULL) {
+        return NULL;
+    }
     memcpy(v->computerName, computerName, 200);
 	v->port = port;
 
