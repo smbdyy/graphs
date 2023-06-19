@@ -13,7 +13,7 @@ void printGraph(struct Graph* graph) {
         struct AdjacencyList* list = graph->adjacencyLists[i];
         for (unsigned int j = 0; j < list->size; j++) {
             struct Edge* edge = list->edges[j];
-            printf("\t edge to %u, ports: ", edge->toVertexNumber);
+            printf("\t edge number %u to %u, ports: ", j, edge->toVertexNumber);
             for (unsigned int k = 0; k < edge->portsAmount; k++) {
                 printf("%u ", edge->ports[k]);
             }
