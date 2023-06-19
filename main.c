@@ -2,7 +2,7 @@
 #include "Graph.h"
 
 void printGraph(struct Graph* graph) {
-    if (graph == NULL || graph->vertexCount == 0) {
+    if (graph->vertexCount == 0) {
         puts("graph is empty");
         return;
     }
@@ -22,6 +22,75 @@ void printGraph(struct Graph* graph) {
     }
 
     puts("graph end");
+}
+
+void addVertexDialog(struct Graph* graph) {
+    puts("enter computer name (<= 200 characters):");
+    char nameBuffer[200];
+    scanf("%s", nameBuffer);
+    puts("enter port:");
+    unsigned int port;
+    scanf("%u", &port);
+
+    struct Vertex* vertex = createVertex(nameBuffer, port);
+    if (vertex == NULL) {
+        puts("error while creating a vertex, returning to main menu");
+        return;
+    }
+
+    if (addVertex(graph, vertex)) {
+        puts("vertex added, returning to main menu");
+    }
+    else {
+        deleteVertex(vertex);
+        puts("error while adding the vertex, returning to main menu");
+    }
+}
+
+void addEdgeDialog(struct Graph* graph) {
+    if (graph->vertexCount < 2) {
+        puts("graph should contain at least 2 vertices to add an edge");
+        return;
+    }
+
+    puts("enter 'to' and 'from' vertices numbers:");
+    unsigned int to, from;
+    scanf("%u %u", &to, &from);
+
+    if (to == from || to >= graph->vertexCount || from >= graph->vertexCount) {
+        puts("incorrect input, returning to main menu");
+        return;
+    }
+
+    puts("enter ports amount:");
+    unsigned int amount;
+    scanf("%u", &amount);
+
+    unsigned int* ports = (unsigned int* )malloc(sizeof(unsigned int) * amount);
+    if (ports == NULL) {
+        puts("allocation failure, returning to main menu");
+        return;
+    }
+
+    puts("enter ports:");
+    for (unsigned int i = 0; i < amount; i++) {
+        scanf("%u", &ports[i]);
+    }
+
+    struct Edge* edge = createEdge(amount, ports, to);
+    if (edge == NULL) {
+        free(ports);
+        puts("error while creating an edge, returning to main menu");
+        return;
+    }
+
+    if (addEdge(graph, from, edge)) {
+        puts("edge added, returning to main menu");
+    }
+    else {
+        deleteEdge(edge);
+        puts("error while adding an edge, returning to main menu");
+    }
 }
 
 int main(int argv, char** args) {
@@ -68,8 +137,31 @@ int main(int argv, char** args) {
     puts("7. Find computers with port");
     puts("8. Find distance");
     puts("9. Split to components");
+    puts("10. Exit");
 
-    printGraph(graph);
+    done = false;
+    while (!done) {
+        unsigned int input;
+        scanf("%u", &input);
+
+        switch (input) {
+            case 0:
+                printGraph(graph);
+                break;
+            case 1:
+                addVertexDialog(graph);
+                break;
+            case 2:
+                addEdgeDialog(graph);
+                break;
+            case 10:
+                done = true;
+                break;
+            default:
+                puts("incorrect value, try again:");
+        }
+    }
+
     deleteGraph(graph);
     return 0;
 }
