@@ -17,4 +17,5 @@ void deleteComponentList(struct ComponentList* list) {
     }
 
     free(list);
+
 }

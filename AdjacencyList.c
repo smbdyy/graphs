@@ -9,6 +9,7 @@ void deleteAdjacencyList(struct AdjacencyList* list) {
     }
 
     free(list->edges);
+    free(list);
 }
 
 bool deleteEdgeFromList(struct AdjacencyList* list, unsigned int edgeNumber) {
