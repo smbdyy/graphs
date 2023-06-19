@@ -11,6 +11,7 @@ struct ComponentList* createComponentList(unsigned int count, struct VertexList*
 }
 
 void deleteComponentList(struct ComponentList* list) {
+    if (list == NULL) return;
     for (int i = 0; i < list->count; i++) {
         deleteVertexList(list->components[i]);
     }

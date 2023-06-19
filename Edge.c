@@ -13,6 +13,7 @@ struct Edge* createEdge(unsigned int portsAmount, unsigned int* ports, unsigned 
 }
 
 void deleteEdge(struct Edge* edge) {
+    if (edge == NULL) return;
 	free(edge->ports);
 	free(edge);
 }

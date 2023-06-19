@@ -2,6 +2,8 @@
 #include "malloc.h"
 
 void deleteAdjacencyList(struct AdjacencyList* list) {
+    if (list == NULL) return;
+
     for (int i = 0; i < list->size; i++) {
         deleteEdge(list->edges[i]);
     }

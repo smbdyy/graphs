@@ -11,6 +11,7 @@ struct Node* createNode(unsigned int value) {
 }
 
 void deleteNode(struct Node* node) {
+    if (node == NULL) return;
     if (node->next != NULL) deleteNode(node->next);
 
     free(node);
@@ -27,6 +28,7 @@ struct Queue* createQueue() {
 }
 
 void deleteQueue(struct Queue* queue) {
+    if (queue == NULL) return;
     deleteNode(queue->front);
     free(queue);
 }

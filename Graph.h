@@ -23,5 +23,6 @@ bool addEdge(struct Graph* graph, unsigned int fromVertexNumber, struct Edge* ed
 bool deleteEdgeFromGraph(struct Graph* graph, unsigned int fromVertexNumber, unsigned int edgeNumber);
 int findDistance(struct Graph* graph, unsigned int fromVertexNumber, unsigned int toVertexNumber);
 struct VertexList* findComputers(struct Graph* graph, unsigned int port);
+struct ComponentList* splitToComponents(struct Graph* graph);
 
 #endif
