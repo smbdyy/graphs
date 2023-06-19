@@ -98,8 +98,17 @@ struct Graph* createRandomGraph() {
             edges[j] = edge;
         }
 
-        adjacencyLists[i]->size = edgesAmount;
-        adjacencyLists[i]->edges = edges;
+        adjacencyLists[i] = createAdjacencyList(edgesAmount, edges);
+        if (adjacencyLists[i] == NULL) {
+            for (unsigned int j = 0; j < i; j++) {
+                deleteAdjacencyList(adjacencyLists[j]);
+            }
+            deleteGraph(graph);
+            free(ports);
+            free(vertices);
+            free(edges);
+            return NULL;
+        }
     }
 
     free(ports);
@@ -382,7 +391,6 @@ struct ComponentList* splitToComponents(struct Graph* graph) {
         deleteQueue(queue);
         return NULL;
     }
-
 
     for (int i = 0; i < n; i++) {
         marked[i] = (bool* )malloc(sizeof(bool) * n);

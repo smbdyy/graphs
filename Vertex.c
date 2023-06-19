@@ -13,6 +13,5 @@ struct Vertex* createVertex(char* computerName, unsigned int port) {
 
 void deleteVertex(struct Vertex* vertex) {
     if (vertex == NULL) return;
-	free(vertex->computerName);
 	free(vertex);
 }
