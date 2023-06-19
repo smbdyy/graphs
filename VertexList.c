@@ -19,7 +19,7 @@ void deleteVertexList(struct VertexList* list) {
 
 void deleteVertexLists(struct VertexList** lists, unsigned int count) {
     if (lists == NULL) return;
-    for (int i = 0; i < count; i++) {
+    for (unsigned int i = 0; i < count; i++) {
         deleteVertexList(lists[i]);
     }
 }

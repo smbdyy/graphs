@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define MAX_RANDOM_VERTICES 50
+#define MAX_RANDOM_VERTICES 10
 
 struct Graph* createEmptyGraph() {
     struct Graph* graph = (struct Graph* )malloc(sizeof(struct Graph));
@@ -32,7 +32,7 @@ struct Graph* createRandomGraph() {
         deleteGraph(graph);
         return NULL;
     }
-    for (int i = 0; i < portsAmount; i++) {
+    for (unsigned int i = 0; i < portsAmount; i++) {
         ports[i] = rand();
     }
 
@@ -42,7 +42,7 @@ struct Graph* createRandomGraph() {
         free(ports);
         return NULL;
     }
-    for (int i = 0; i < vertexAmount; i++) {
+    for (unsigned int i = 0; i < vertexAmount; i++) {
         unsigned int port = ports[rand() % portsAmount];
         vertices[i] = createVertex("random name", port);
     }
@@ -56,7 +56,7 @@ struct Graph* createRandomGraph() {
         return NULL;
     }
 
-    for (int i = 0; i < vertexAmount; i++) {
+    for (unsigned int i = 0; i < vertexAmount; i++) {
         unsigned int edgesAmount = rand() % vertexAmount;
         struct Edge** edges = (struct Edge** )malloc(sizeof(struct Edge* ) * edgesAmount);
         if (edges == NULL) {
@@ -65,7 +65,7 @@ struct Graph* createRandomGraph() {
             free(vertices);
             return NULL;
         }
-        for (int j = 0; j < edgesAmount; j++) {
+        for (unsigned int j = 0; j < edgesAmount; j++) {
             unsigned int portsInEdgeAmount = rand() % portsAmount + 1;
             unsigned int* portsInEdge = (unsigned int* )malloc(sizeof(unsigned int) * portsInEdgeAmount);
 
@@ -77,8 +77,8 @@ struct Graph* createRandomGraph() {
                 return NULL;
             }
 
-            for (int k = 0; k < portsInEdgeAmount; k++) {
-                portsInEdge[i] = ports[rand() % portsAmount];
+            for (unsigned int k = 0; k < portsInEdgeAmount; k++) {
+                portsInEdge[k] = ports[rand() % portsAmount];
             }
 
             unsigned int toVertexNumber = rand() % vertexAmount;
@@ -121,7 +121,7 @@ struct Graph* createRandomGraph() {
 
 void deleteGraph(struct Graph* graph) {
     if (graph == NULL) return;
-    for (int i = 0; i < graph->vertexCount; i++) {
+    for (unsigned int i = 0; i < graph->vertexCount; i++) {
         deleteVertex(graph->vertices[i]);
         deleteAdjacencyList(graph->adjacencyLists[i]);
     }
@@ -131,7 +131,7 @@ void deleteGraph(struct Graph* graph) {
 }
 
 bool addVertex(struct Graph* graph, struct Vertex* vertex) {
-    for (int i = 0; i < graph->vertexCount; i++) {
+    for (unsigned int i = 0; i < graph->vertexCount; i++) {
         if (vertex == graph->vertices[i]) return false;
     }
 
@@ -144,7 +144,7 @@ bool addVertex(struct Graph* graph, struct Vertex* vertex) {
         return NULL;
     }
 
-    for (int i = 0; i < graph->vertexCount; i++) {
+    for (unsigned int i = 0; i < graph->vertexCount; i++) {
         newVertices[i] = graph->vertices[i];
         newLists[i] = graph->adjacencyLists[i];
     }
@@ -185,7 +185,7 @@ bool removeVertex(struct Graph* graph, unsigned int vertexNumber) {
         newVertices[i] = graph->vertices[i];
         newLists[i] = graph->adjacencyLists[i];
 
-        for (int j = 0; j < newLists[i]->size; j++) {
+        for (unsigned int j = 0; j < newLists[i]->size; j++) {
             if (newLists[i]->edges[j]->toVertexNumber == vertexNumber) {
                 if (!deleteEdgeFromList(newLists[i], j)) return false;
             }
@@ -193,7 +193,7 @@ bool removeVertex(struct Graph* graph, unsigned int vertexNumber) {
     }
 
     for (unsigned int i = 0; i < graph->vertexCount; i++) {
-        for (int j = 0; j < newLists[i]->size; j++) {
+        for (unsigned int j = 0; j < newLists[i]->size; j++) {
             if (newLists[i]->edges[j]->toVertexNumber > vertexNumber) {
                 newLists[i]->edges[j]->toVertexNumber--;
             }
@@ -207,7 +207,7 @@ bool addEdge(struct Graph* graph, unsigned int fromVertexNumber, struct Edge* ed
     if (fromVertexNumber >= graph->vertexCount) return false;
 
     struct AdjacencyList* list = graph->adjacencyLists[fromVertexNumber];
-    for (int i = 0; i < list->size; i++) {
+    for (unsigned int i = 0; i < list->size; i++) {
         if (list->edges[i] == edge) return false;
     }
 
@@ -235,7 +235,7 @@ int findDistance(struct Graph* graph, unsigned int fromVertexNumber, unsigned in
         return -1;
     }
 
-    for (int i = 0; i < n; i++) {
+    for (unsigned int i = 0; i < n; i++) {
         distances[i] = -1;
         visited[i] = false;
     }
@@ -253,7 +253,7 @@ int findDistance(struct Graph* graph, unsigned int fromVertexNumber, unsigned in
         unsigned int vertexNumber = dequeue(queue);
         struct Vertex* vertex = graph->vertices[vertexNumber];
         struct AdjacencyList* edges = graph->adjacencyLists[vertexNumber];
-        for (int i = 0; i < edges->size; i++) {
+        for (unsigned int i = 0; i < edges->size; i++) {
             struct Edge* edge = edges->edges[i];
 
             unsigned int to = edge->toVertexNumber;
@@ -299,11 +299,11 @@ struct VertexList* findComputers(struct Graph* graph, unsigned int port) {
         return NULL;
     }
 
-    for (int i = 0; i < n; i++) {
+    for (unsigned int i = 0; i < n; i++) {
         visited[i] = false;
     }
 
-    for (int i = 0; i < n; i++) {
+    for (unsigned int i = 0; i < n; i++) {
         if (visited[i] || graph->vertices[i]->port != port) continue;
 
         if (!enqueue(queue, i)) {
@@ -317,7 +317,7 @@ struct VertexList* findComputers(struct Graph* graph, unsigned int port) {
             unsigned int vertexNumber = dequeue(queue);
             struct AdjacencyList* edges = graph->adjacencyLists[vertexNumber];
             struct Vertex* vertex = graph->vertices[vertexNumber];
-            for (int j = 0; j < edges->size; j++) {
+            for (unsigned int j = 0; j < edges->size; j++) {
                 struct Edge* edge = edges->edges[j];
                 unsigned int to = edge->toVertexNumber;
 
@@ -338,13 +338,13 @@ struct VertexList* findComputers(struct Graph* graph, unsigned int port) {
 
     deleteQueue(queue);
     unsigned int count = 0;
-    for (int i = 0; i < n; i++) {
+    for (unsigned int i = 0; i < n; i++) {
         if (visited[i]) count++;
     }
 
     struct Vertex** vertices = (struct Vertex** )malloc(sizeof(struct Vertex* ) * count);
     int index = 0;
-    for (int i = 0; i < n; i++) {
+    for (unsigned int i = 0; i < n; i++) {
         if (visited[i]) {
             vertices[index] = graph->vertices[i];
             index++;
@@ -359,7 +359,7 @@ bool isReachable(struct Graph* graph, unsigned int fromNumber, unsigned int toNu
     struct AdjacencyList* list = graph->adjacencyLists[fromNumber];
     struct Vertex* fromVertex = graph->vertices[fromNumber];
     struct Vertex* toVertex = graph->vertices[toNumber];
-    for (int i = 0; i < list->size; i++) {
+    for (unsigned int i = 0; i < list->size; i++) {
         struct Edge* edge = list->edges[i];
         if (edge->toVertexNumber == toNumber && containsPort(edge, toVertex->port) && containsPort(edge, fromVertex->port)) {
             return true;
@@ -370,7 +370,7 @@ bool isReachable(struct Graph* graph, unsigned int fromNumber, unsigned int toNu
 }
 
 void freeMarked(bool** marked, unsigned int n) {
-    for (int i = 0; i < n; i++) {
+    for (unsigned int i = 0; i < n; i++) {
         free(marked[i]);
     }
 
@@ -392,7 +392,7 @@ struct ComponentList* splitToComponents(struct Graph* graph) {
         return NULL;
     }
 
-    for (int i = 0; i < n; i++) {
+    for (unsigned int i = 0; i < n; i++) {
         marked[i] = (bool* )malloc(sizeof(bool) * n);
         if (marked[i] == NULL) {
             free(visited);
@@ -402,11 +402,11 @@ struct ComponentList* splitToComponents(struct Graph* graph) {
         }
     }
 
-    for (int i = 0; i < n; i++) {
+    for (unsigned int i = 0; i < n; i++) {
         visited[i] = false;
     }
 
-    for (int i = 0; i < n; i++) {
+    for (unsigned int i = 0; i < n; i++) {
         if (visited[i]) continue;
 
         if (!enqueue(queue, i)) {
@@ -424,7 +424,7 @@ struct ComponentList* splitToComponents(struct Graph* graph) {
             struct Vertex* vertex = graph->vertices[vertexNumber];
             struct AdjacencyList* list = graph->adjacencyLists[vertexNumber];
 
-            for (int j = 0; j < list->size; j++) {
+            for (unsigned int j = 0; j < list->size; j++) {
                 struct Edge* edge = list->edges[j];
                 struct Vertex* toVertex = graph->vertices[edge->toVertexNumber];
                 if (visited[edge->toVertexNumber] ||
@@ -456,9 +456,9 @@ struct ComponentList* splitToComponents(struct Graph* graph) {
         return NULL;
     }
 
-    for (int i = 0; i < componentsCount; i++) {
+    for (unsigned int i = 0; i < componentsCount; i++) {
         unsigned int size = 0;
-        for (int j = 0; j < n; j++) {
+        for (unsigned int j = 0; j < n; j++) {
             if (marked[i][j]) size++;
         }
 
@@ -472,7 +472,7 @@ struct ComponentList* splitToComponents(struct Graph* graph) {
         }
 
         unsigned int vertexIndex = 0;
-        for (int j = 0; j < n; j++) {
+        for (unsigned int j = 0; j < n; j++) {
             if (marked[i][j]) {
                 vertices[vertexIndex] = graph->vertices[j];
                 vertexIndex++;

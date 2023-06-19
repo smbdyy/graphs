@@ -19,7 +19,7 @@ void deleteEdge(struct Edge* edge) {
 }
 
 bool containsPort(struct Edge* edge, unsigned int port) {
-    for (int i = 0; i < edge->portsAmount; i++) {
+    for (unsigned int i = 0; i < edge->portsAmount; i++) {
         if (edge->ports[i] == port) return true;
     }
 

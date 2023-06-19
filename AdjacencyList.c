@@ -13,7 +13,7 @@ struct AdjacencyList* createAdjacencyList(unsigned int size, struct Edge** edges
 void deleteAdjacencyList(struct AdjacencyList* list) {
     if (list == NULL) return;
 
-    for (int i = 0; i < list->size; i++) {
+    for (unsigned int i = 0; i < list->size; i++) {
         deleteEdge(list->edges[i]);
     }
 
@@ -28,7 +28,7 @@ bool deleteEdgeFromList(struct AdjacencyList* list, unsigned int edgeNumber) {
     if (newList == NULL) return false;
 
     deleteEdge(list->edges[edgeNumber]);
-    for (int i = 0; i < edgeNumber; i++) {
+    for (unsigned int i = 0; i < edgeNumber; i++) {
         newList[i] = list->edges[i];
     }
     for (unsigned int i = edgeNumber + 1; i < list->size; i++) {
