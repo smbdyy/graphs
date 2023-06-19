@@ -48,6 +48,8 @@ bool enqueue(struct Queue* queue, unsigned int value) {
         queue->back->next = node;
         queue->back = node;
     }
+
+    return true;
 }
 
 unsigned int dequeue(struct Queue* queue) {
