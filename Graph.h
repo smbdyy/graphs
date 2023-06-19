@@ -6,6 +6,7 @@
 #include "Edge.h"
 #include "AdjacencyList.h"
 #include "VertexList.h"
+#include "ComponentList.h"
 
 struct Graph {
 	unsigned int vertexCount;
