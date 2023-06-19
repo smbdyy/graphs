@@ -8,4 +8,9 @@ include_directories(.)
 add_executable(graphs
         Edge.c
         Graph.c
-        Vertex.c AdjacencyList.c Queue.h Queue.c VertexList.h VertexList.c ComponentList.h ComponentList.c main.c)
+        Vertex.c
+        AdjacencyList.c
+        Queue.c
+        VertexList.c
+        ComponentList.c
+        main.c)
