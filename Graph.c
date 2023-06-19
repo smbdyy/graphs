@@ -403,6 +403,10 @@ struct ComponentList* splitToComponents(struct Graph* graph) {
             freeMarked(marked, n);
             return NULL;
         }
+
+        for (unsigned int j = 0; j < n; j++) {
+            marked[i][j] = false;
+        }
     }
 
     for (unsigned int i = 0; i < n; i++) {
@@ -451,11 +455,12 @@ struct ComponentList* splitToComponents(struct Graph* graph) {
         componentsCount++;
     }
 
+    free(visited);
+    deleteQueue(queue);
+
     struct VertexList** vertexLists = (struct VertexList** )malloc(sizeof(struct VertexList*) * componentsCount);
     if (vertexLists == NULL) {
-        free(visited);
         freeMarked(marked, n);
-        deleteQueue(queue);
         return NULL;
     }
 
@@ -467,9 +472,7 @@ struct ComponentList* splitToComponents(struct Graph* graph) {
 
         struct Vertex** vertices = (struct Vertex** )malloc(sizeof(struct Vertex* ) * size);
         if (vertices == NULL) {
-            free(visited);
             freeMarked(marked, n);
-            deleteQueue(queue);
             deleteVertexLists(vertexLists, componentsCount);
             return NULL;
         }
@@ -485,22 +488,16 @@ struct ComponentList* splitToComponents(struct Graph* graph) {
         struct VertexList* list = createVertexList(size, vertices);
         if (list == NULL) {
             free(vertices);
-            free(visited);
             freeMarked(marked, n);
-            deleteQueue(queue);
             deleteVertexLists(vertexLists, componentsCount);
             return NULL;
         }
 
-        free(vertices);
         vertexLists[i] = list;
     }
 
     struct ComponentList* list = createComponentList(componentsCount, vertexLists);
 
-    free(visited);
     freeMarked(marked, n);
-    deleteQueue(queue);
-    deleteVertexLists(vertexLists, componentsCount);
     return list;
 }
