@@ -265,6 +265,35 @@ void editEdgePortsDialog(struct Graph* graph) {
     puts("returning to main menu");
 }
 
+void findComputersWithPortDialog(struct Graph* graph) {
+    if (graph->vertexCount == 0) {
+        puts("graph is empty, returning to main menu");
+        return;
+    }
+
+    puts("enter port:");
+    unsigned int port;
+    scanf("%u", &port);
+
+    struct VertexList* list = findComputers(graph, port);
+    if (list == NULL) {
+        puts("error while finding computers, returning to main menu");
+        return;
+    }
+
+    if (list->size == 0) {
+        puts("no computers with specified port");
+        return;
+    }
+
+    printf("computers with port %u and reachable:\n", port);
+    for (unsigned int i = 0; i < list->size; i++) {
+        printf("%s\n", list->vertices[i]->computerName);
+    }
+
+    puts("returning to main menu");
+}
+
 int main(int argv, char** args) {
     struct Graph* graph;
     puts("pick an option:\n 0. Create empty graph\n 1. Create random graph\n 2. Exit");
@@ -342,7 +371,10 @@ int main(int argv, char** args) {
             case 7:
                 editEdgePortsDialog(graph);
                 break;
-            case 10:
+            case 8:
+                findComputersWithPortDialog(graph);
+                break;
+            case 11:
                 done = true;
                 break;
             default:
