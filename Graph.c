@@ -160,7 +160,7 @@ bool addVertex(struct Graph* graph, struct Vertex* vertex) {
     return true;
 }
 
-bool removeVertex(struct Graph* graph, unsigned int vertexNumber) {
+bool deleteVertexFromGraph(struct Graph* graph, unsigned int vertexNumber) {
     if (vertexNumber >= graph->vertexCount) return false;
 
     struct Vertex** newVertices = (struct Vertex** )malloc(sizeof(struct Vertex*) * (graph->vertexCount - 1));
