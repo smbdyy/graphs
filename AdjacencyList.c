@@ -1,6 +1,15 @@
 #include "AdjacencyList.h"
 #include "malloc.h"
 
+struct AdjacencyList* createAdjacencyList(unsigned int size, struct Edge** edges) {
+    struct AdjacencyList* list = (struct AdjacencyList* )malloc(sizeof(struct AdjacencyList));
+    if (list == NULL) return NULL;
+
+    list->size = size;
+    list->edges = edges;
+    return list;
+}
+
 void deleteAdjacencyList(struct AdjacencyList* list) {
     if (list == NULL) return;
 

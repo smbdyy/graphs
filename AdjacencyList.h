@@ -10,6 +10,7 @@ struct AdjacencyList {
     struct Edge** edges;
 };
 
+struct AdjacencyList* createAdjacencyList(unsigned int size, struct Edge** edges);
 void deleteAdjacencyList(struct AdjacencyList* list);
 bool deleteEdgeFromList(struct AdjacencyList* list, unsigned int edgeNumber);
 bool addEdgeToList(struct AdjacencyList* list, struct Edge* edge);
