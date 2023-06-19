@@ -168,6 +168,82 @@ void changeVertexComputerNameDialog(struct Graph* graph) {
     puts("vertex computer renamed successfully");
 }
 
+void addPortDialog(struct Edge* edge) {
+    unsigned int port;
+    puts("enter port:");
+    scanf("%u", &port);
+
+    if (containsPort(edge, port)) {
+        puts("port already exists");
+        return;
+    }
+
+    if (addPort(edge, port)) {
+        puts("port added successfully");
+    }
+    else {
+        puts("error while adding the port");
+    }
+}
+
+void deletePortDialog(struct Edge* edge) {
+    unsigned int portNumber;
+    puts("enter port number:");
+    scanf("%u", &portNumber);
+
+    if (edge->portsAmount <= portNumber) {
+        puts("no such port");
+        return;
+    }
+
+    if (deletePort(edge, portNumber)) {
+        puts("port deleted successfully");
+    }
+    else {
+        puts("error while deleting the port");
+    }
+}
+
+void editEdgePortsDialog(struct Graph* graph) {
+    if (!hasEdges(graph)) {
+        puts("graph has no edges, returning to main menu");
+        return;
+    }
+
+    puts("enter 'from' vertex number and edgeNumber number:");
+    unsigned int vertex, edgeNumber;
+    scanf("%u %u", &vertex, &edgeNumber);
+    if (vertex >= graph->vertexCount || graph->adjacencyLists[vertex]->size <= edgeNumber) {
+        puts("no such vertex or edgeNumber, returning to main menu");
+        return;
+    }
+
+    struct Edge* edge = graph->adjacencyLists[vertex]->edges[edgeNumber];
+    bool hasPorts = edge->portsAmount > 0;
+    printf("enter 0 to add port");
+    if (hasPorts) {
+        printf(", enter 1 to remove port");
+    }
+    puts("");
+
+    unsigned int input;
+    scanf("%u", &input);
+    switch (input) {
+        case 0:
+            addPortDialog(edge);
+            break;
+        case 1:
+            if (hasPorts) {
+                deletePortDialog(edge);
+                break;
+            }
+        default:
+            puts("incorrect input");
+    }
+
+    puts("returning to main menu");
+}
+
 int main(int argv, char** args) {
     struct Graph* graph;
     puts("pick an option:\n 0. Create empty graph\n 1. Create random graph\n 2. Exit");
@@ -208,11 +284,12 @@ int main(int argv, char** args) {
     puts("3. Delete vertex");
     puts("4. Delete edge");
     puts("5. Change vertex computer name");
-    puts("6. Edit edge ports");
-    puts("7. Find computers with port");
-    puts("8. Find distance");
-    puts("9. Split to components");
-    puts("10. Exit");
+    puts("6. Change vertex port");
+    puts("7. Edit edge ports");
+    puts("8. Find computers with port");
+    puts("9. Find distance");
+    puts("10. Split to components");
+    puts("11. Exit");
 
     done = false;
     while (!done) {
@@ -237,6 +314,10 @@ int main(int argv, char** args) {
                 break;
             case 5:
                 changeVertexComputerNameDialog(graph);
+                break;
+
+            case 7:
+                editEdgePortsDialog(graph);
                 break;
             case 10:
                 done = true;
