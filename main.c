@@ -294,6 +294,32 @@ void findComputersWithPortDialog(struct Graph* graph) {
     puts("returning to main menu");
 }
 
+void findDistanceDialog(struct Graph* graph) {
+    if (graph->vertexCount < 2) {
+        puts("graph should contain at least 2 vertices, returning to main menu");
+        return;
+    }
+
+    puts("enter source and destination vertices numbers:");
+    unsigned int to, from;
+    scanf("%u %u", &from, &to);
+
+    if (to >= graph->vertexCount || from >= graph->vertexCount) {
+        puts("no such vertex, returning to main menu");
+        return;
+    }
+
+    int distance = findDistance(graph, from, to);
+    if (distance == -1) {
+        puts("cannot find distance");
+    }
+    else {
+        printf("distance: %d\n", distance);
+    }
+
+    puts("returning to main menu");
+}
+
 int main(int argv, char** args) {
     struct Graph* graph;
     puts("pick an option:\n 0. Create empty graph\n 1. Create random graph\n 2. Exit");
@@ -373,6 +399,9 @@ int main(int argv, char** args) {
                 break;
             case 8:
                 findComputersWithPortDialog(graph);
+                break;
+            case 9:
+                findDistanceDialog(graph);
                 break;
             case 11:
                 done = true;
