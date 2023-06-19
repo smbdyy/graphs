@@ -1,11 +1,13 @@
 #include "Vertex.h"
 #include <malloc.h>
+#include <memory.h>
 
 struct Vertex* createVertex(char* computerName, unsigned int port) {
 	struct Vertex* v = (struct Vertex* )malloc(sizeof(struct Vertex));
     if (v == NULL) return NULL;
 
-	v->computerName = computerName;
+    v->computerName = (char* )malloc(sizeof(char) * 200);
+    memcpy(v->computerName, computerName, 200);
 	v->port = port;
 
 	return v;
@@ -13,5 +15,6 @@ struct Vertex* createVertex(char* computerName, unsigned int port) {
 
 void deleteVertex(struct Vertex* vertex) {
     if (vertex == NULL) return;
+    free(vertex->computerName);
 	free(vertex);
 }
