@@ -12,5 +12,7 @@ struct Edge {
 struct Edge* createEdge(unsigned int portsAmount, unsigned int* ports, unsigned int toVertexNumber);
 void deleteEdge(struct Edge* edge);
 bool containsPort(struct Edge* edge, unsigned int port);
+bool addPort(struct Edge* edge, unsigned int port);
+bool deletePort(struct Edge* edge, unsigned int portNumber);
 
 #endif
