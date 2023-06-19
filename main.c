@@ -93,6 +93,28 @@ void addEdgeDialog(struct Graph* graph) {
     }
 }
 
+void deleteVertexDialog(struct Graph* graph) {
+    if (graph->vertexCount == 0) {
+        puts("graph is empty, returning to main menu");
+        return;
+    }
+
+    unsigned int number;
+    puts("enter vertex number:");
+    scanf("%u", &number);
+    if (number >= graph->vertexCount){
+        puts("no such vertex, returning to main menu");
+        return;
+    }
+
+    if (deleteVertexFromGraph(graph, number)) {
+        puts("vertex deleted successfully, returning to main menu");
+    }
+    else {
+        puts("error while deleting a vertex, returning to main menu");
+    }
+}
+
 int main(int argv, char** args) {
     struct Graph* graph;
     puts("pick an option:\n 0. Create empty graph\n 1. Create random graph\n 2. Exit");
@@ -153,6 +175,9 @@ int main(int argv, char** args) {
                 break;
             case 2:
                 addEdgeDialog(graph);
+                break;
+            case 3:
+                deleteVertexDialog(graph);
                 break;
             case 10:
                 done = true;
