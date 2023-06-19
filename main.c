@@ -1,9 +1,10 @@
 #include <stdio.h>
+#include <memory.h>
 #include "Graph.h"
 
 void printGraph(struct Graph* graph) {
     if (graph->vertexCount == 0) {
-        puts("graph is empty");
+        puts("graph is empty, returning to main menu");
         return;
     }
 
@@ -21,7 +22,7 @@ void printGraph(struct Graph* graph) {
         }
     }
 
-    puts("graph end");
+    puts("graph end, returning to main menu");
 }
 
 void addVertexDialog(struct Graph* graph) {
@@ -145,6 +146,28 @@ void deleteEdgeDialog(struct Graph* graph) {
     }
 }
 
+void changeVertexComputerNameDialog(struct Graph* graph) {
+    if (graph->vertexCount == 0) {
+        puts("graph is empty, returning to main menu");
+        return;
+    }
+
+    unsigned int number;
+    puts("enter vertex number:");
+    scanf("%u", &number);
+    if (number >= graph->vertexCount) {
+        puts("no such vertex, returning to main menu");
+        return;
+    }
+
+    char nameBuffer[200];
+    puts("enter new name (<= 200 characters)");
+    scanf("%s", nameBuffer);
+
+    memcpy(graph->vertices[number]->computerName, nameBuffer, 200);
+    puts("vertex computer renamed successfully");
+}
+
 int main(int argv, char** args) {
     struct Graph* graph;
     puts("pick an option:\n 0. Create empty graph\n 1. Create random graph\n 2. Exit");
@@ -211,6 +234,9 @@ int main(int argv, char** args) {
                 break;
             case 4:
                 deleteEdgeDialog(graph);
+                break;
+            case 5:
+                changeVertexComputerNameDialog(graph);
                 break;
             case 10:
                 done = true;
