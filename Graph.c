@@ -154,7 +154,7 @@ bool addVertex(struct Graph* graph, struct Vertex* vertex) {
     graph->vertices = newVertices;
     graph->adjacencyLists = newLists;
     graph->vertices[graph->vertexCount] = vertex;
-    graph->adjacencyLists[graph->vertexCount]->size = 0;
+    graph->adjacencyLists[graph->vertexCount] = createAdjacencyList(0, NULL);
     graph->vertexCount++;
 
     return true;
