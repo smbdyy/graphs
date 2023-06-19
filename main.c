@@ -320,6 +320,29 @@ void findDistanceDialog(struct Graph* graph) {
     puts("returning to main menu");
 }
 
+void splitToComponentsDialog(struct Graph* graph) {
+    if (graph->vertexCount == 0) {
+        puts("graph is empty, returning to main menu");
+        return;
+    }
+
+    struct ComponentList* components = splitToComponents(graph);
+    if (components == NULL) {
+        puts("error while splitting to components, returning to main menu");
+        return;
+    }
+
+    for (unsigned int i = 0; i < components->count; i++) {
+        printf("component %u computers:\n", i);
+        struct VertexList* list = components->components[i];
+        for (unsigned int j = 0; j < list->size; j++) {
+            printf("\t %s\n", list->vertices[j]->computerName);
+        }
+    }
+
+    puts("returning to main menu");
+}
+
 int main(int argv, char** args) {
     struct Graph* graph;
     puts("pick an option:\n 0. Create empty graph\n 1. Create random graph\n 2. Exit");
@@ -402,6 +425,9 @@ int main(int argv, char** args) {
                 break;
             case 9:
                 findDistanceDialog(graph);
+                break;
+            case 10:
+                splitToComponentsDialog(graph);
                 break;
             case 11:
                 done = true;
