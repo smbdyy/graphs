@@ -5,6 +5,7 @@
 #include "ComponentList.h"
 #include <stdlib.h>
 #include <time.h>
+#include <stdio.h>
 
 #define MAX_RANDOM_VERTICES 10
 
@@ -44,7 +45,9 @@ struct Graph* createRandomGraph() {
     }
     for (unsigned int i = 0; i < vertexAmount; i++) {
         unsigned int port = ports[rand() % portsAmount];
-        vertices[i] = createVertex("random name", port);
+        char name[200];
+        sprintf(name, "random name %u", i);
+        vertices[i] = createVertex(name, port);
     }
 
     struct AdjacencyList** adjacencyLists = (struct AdjacencyList** )
